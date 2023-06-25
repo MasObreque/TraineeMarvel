@@ -1,0 +1,13 @@
+buildscript {
+    dependencies {
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.45'
+    }
+}
+plugins {
+    alias libs.plugins.application apply false
+    alias libs.plugins.library apply false
+    alias libs.plugins.kotlin apply false
+    alias libs.plugins.kapt apply false
+    alias libs.plugins.java apply false
+    alias libs.plugins.dagger.hilt apply false
+}
