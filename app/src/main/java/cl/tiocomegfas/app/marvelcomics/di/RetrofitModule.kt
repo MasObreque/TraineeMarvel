@@ -1,6 +1,8 @@
 package cl.tiocomegfas.app.marvelcomics.di
 
 import cl.tiocomegfas.app.marvelcomics.data.source.remote.ApiServices
+import cl.tiocomegfas.app.marvelcomics.di.qualifier.JsonResponse
+import cl.tiocomegfas.app.marvelcomics.di.qualifier.RawResponse
 import cl.tiocomegfas.app.marvelcomics.util.network.AddKeyInterceptor
 import cl.tiocomegfas.app.marvelcomics.util.network.RetrofitClient
 import dagger.Module
@@ -20,7 +22,15 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideApiServices(interceptor: AddKeyInterceptor): ApiServices {
+    @JsonResponse
+    fun provideJsonApiServices(interceptor: AddKeyInterceptor): ApiServices {
         return RetrofitClient(interceptor).initialize()
+    }
+
+    @Provides
+    @Singleton
+    @RawResponse
+    fun provideRawApiServices(interceptor: AddKeyInterceptor): ApiServices {
+        return RetrofitClient(interceptor).default()
     }
 }

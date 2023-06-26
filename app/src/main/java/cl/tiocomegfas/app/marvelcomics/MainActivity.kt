@@ -8,8 +8,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import cl.tiocomegfas.app.marvelcomics.presentation.home.HomeEvent
+import cl.tiocomegfas.app.marvelcomics.presentation.home.HomeScreen
+import cl.tiocomegfas.app.marvelcomics.presentation.home.HomeViewModel
 import cl.tiocomegfas.app.marvelcomics.util.theme.MarvelComicsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +28,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
+                    val viewModel = hiltViewModel<HomeViewModel>()
+                    HomeScreen(viewModel.uiState) {
+                        viewModel.executeEvent(it)
+                    }
                 }
             }
         }
