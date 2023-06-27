@@ -44,7 +44,7 @@ fun HomeScreen(
                                 onEvent(HomeEvent.GetThumbnail(result.mapper.characters[index].id))
                                 CardItemList(
                                     modifier = Modifier.fillMaxWidth(),
-                                    icon = R.drawable.marvel_logo_0,
+                                    icon = R.drawable.marvel_logo,
                                     title = result.mapper.characters[index].name,
                                     subtitle = "Tiene ${result.mapper.characters[index].comics} comics y ${result.mapper.characters[index].series} series",
                                 ) {

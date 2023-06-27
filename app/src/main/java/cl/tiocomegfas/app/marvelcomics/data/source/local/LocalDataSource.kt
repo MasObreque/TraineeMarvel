@@ -6,7 +6,14 @@ import cl.tiocomegfas.app.marvelcomics.data.entity.response.GetAllCharactersResp
 import cl.tiocomegfas.app.marvelcomics.util.getIdByURI
 import cl.tiocomegfas.app.marvelcomics.util.persistence.PersistenceConfiguration
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.BufferedOutputStream
+import java.io.BufferedWriter
 import java.io.File
+import java.io.FileOutputStream
+import java.io.FileWriter
+import java.io.Writer
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
@@ -89,15 +96,21 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun saveCharacterThumbnail(id: Int, response: ByteArray) {
-        val file = File(context.filesDir.absoluteFile.absolutePath, "character/$id.jpg")
-        file.writeBytes(response)
-
+        val file = File(context.filesDir.absoluteFile.absolutePath, "character")
+        file.mkdirs()
+        val image = File(file, "$id.jpg")
+        withContext(Dispatchers.IO) {
+            val stream = BufferedOutputStream(FileOutputStream(image, false))
+            stream.write(response)
+            stream.flush()
+            stream.close()
+        }
         setMarvelDatabase {
             it.copy(
                 characters = it.characters.map { character ->
                     if(character.id == id) {
                         character.copy(
-                            thumbnailURI = file.absolutePath
+                            thumbnailURI = image.absolutePath
                         )
                     } else {
                         character
